@@ -4,18 +4,18 @@ import pandas as pd
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException
 
-sites = pd.read_excel('D:\last.xlsx')
+sites = pd.read_excel('D:\sites.xlsx')
 
 
 full = list()
 for site in sites["WebSite"]:
     r = requests.get(r'http://' + site + '/info_add/teachers_salary/#')
-    if r.status_code == 200:
+    if r.status_code == 200:        
         driver = webdriver.Chrome()
         a = driver.get(r'http://' + site + '/info_add/teachers_salary/#')
         try:
-            driver.find_element_by_class_name("uscl-public_popup-not-show").click()
-        except:
+            driver.find_element_by_class_name("uscl-public_popup-not-show").click()     
+        except NoSuchElementException:
             pass
         try:
             driver.find_element_by_partial_link_text("2018/2019").click()
@@ -47,6 +47,6 @@ for site in sites["WebSite"]:
         pass
 df = pd.concat(full, ignore_index=True)
 print(df)
-df.to_excel("D:/18-19(4).xlsx",
-               sheet_name='tablica')
+df.to_excel("D:/18-19.xlsx",
+               sheet_name='18/19')
 
